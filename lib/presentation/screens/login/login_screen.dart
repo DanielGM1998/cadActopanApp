@@ -388,16 +388,21 @@ Future<String> _check(telefono, pass) async {
           host: 'v8.cadactopan.com.mx',
           path: '/api/login',
         ),
-        body: data);
+        body: data,
+        // headers: <String, String>{
+        //   'Content-Type': 'application/json; charset=UTF-8',
+        //   'Access-Control-Allow-Origin': '*'
+        // },
+      );
     if (response.statusCode == 200) {
       String body3 = utf8.decode(response.bodyBytes);
       var jsonData = jsonDecode(body3);
       if(jsonData['success']==true){
         print(jsonData['paciente']);
         if(jsonData['paciente']['admin']==true){
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0";
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente'];
         }else{
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1";
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente'];
         }
       }else{
         return 'Verifique sus datos';
@@ -443,6 +448,7 @@ Future<void> showResultDialog(
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('user', splitted[1]);
     prefs.setString('tipo_app', splitted[2]);
+    prefs.setString('id_paciente', splitted[3]);
     Navigator.of(context).push(
       PageRouteBuilder(
         barrierColor: Colors.black.withOpacity(0.6),

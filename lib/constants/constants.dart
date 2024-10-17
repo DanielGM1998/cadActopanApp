@@ -2,7 +2,15 @@ import 'package:flutter/cupertino.dart';
 
 const nameVersion = "CAD Actopan v1.0.1";
 
+const nameApp = "CAD Actopan";
+
 const myLogo = 'assets/images/logo.png';
+
+const nameGlucosa = "Glucosa";
+
+const namePresion = "Presión Arterial";
+
+const nameLaboratorios = "Laboratorios";
 
 const Color myColor = Color.fromRGBO(104, 145, 208,1);
 

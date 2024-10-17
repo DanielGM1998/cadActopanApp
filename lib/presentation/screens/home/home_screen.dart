@@ -4,15 +4,18 @@ import 'dart:ui';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:recuperacion/constants/constants.dart';
+import 'package:recuperacion/presentation/screens/glucosa/glucosa_screen.dart';
+import 'package:recuperacion/presentation/screens/presion/presion_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../widgets/my_app_bar.dart';
 import '../../widgets/side_menu.dart';
+import '../laboratorios/laboratorios_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const String routeName = 'inicio';
+  static const String routeName = 'home';
 
   const HomeScreen({
     Key? key,
@@ -25,13 +28,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   String? _tipoapp;
   String? _userapp;
-
-  final _key = GlobalKey<ExpandableFabState>();
+  String? _idPaciente;
 
   Future<bool?> getVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
+    _idPaciente = prefs.getString("id_paciente");
     return false;
   }
 
@@ -45,16 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     DateTime.now().add(const Duration(days: 15)),
   ];
 
-  final List<Map<String, dynamic>> modulos = [
-    {'nombre': 'Glucosa', 'icono': Icons.person, 'color': Colors.green},
-    {'nombre': 'Presión Arterial', 'icono': Icons.settings, 'color': Colors.yellow},
-    {'nombre': 'Receta', 'icono': Icons.bar_chart, 'color': Colors.red},
-    {'nombre': 'Laboratorios', 'icono': Icons.message, 'color': Colors.deepPurple},
-    {'nombre': 'Alimentación', 'icono': Icons.calendar_today, 'color': Colors.orange},
-    {'nombre': 'Pendientes', 'icono': Icons.calendar_today, 'color': Colors.blue},
-    {'nombre': 'Pendientes2', 'icono': Icons.calendar_today, 'color': Colors.blueGrey},
-    {'nombre': 'Pendientes3', 'icono': Icons.calendar_today, 'color': Colors.lime},
-  ];
+  late List<Map<String, dynamic>> modulos;
 
   @override
   void initState() {
@@ -72,45 +66,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       future: getVariables(),
       builder: (context, snapshot) {
         if (snapshot.data == false) {
-          
+          modulos = [
+            {'nombre': 'Glucosa', 'icono': Icons.person, 'color': Colors.green, 'ruta': GlucosaScreen(idPaciente: _idPaciente!.toString())},
+            {'nombre': 'Presión Arterial', 'icono': Icons.settings, 'color': Colors.yellow[600], 'ruta': PresionScreen(idPaciente: _idPaciente!.toString())},
+            {'nombre': 'Receta', 'icono': Icons.bar_chart, 'color': Colors.red, 'ruta': const LaboratoriosScreen()},
+            {'nombre': 'Laboratorios', 'icono': Icons.message, 'color': Colors.deepPurple, 'ruta': const LaboratoriosScreen()},
+            // {'nombre': 'Alimentación', 'icono': Icons.calendar_today, 'color': Colors.orange, 'ruta': const LaboratoriosScreen()},
+            // {'nombre': 'Pendientes', 'icono': Icons.calendar_today, 'color': Colors.blue, 'ruta': const LaboratoriosScreen()},
+            // {'nombre': 'Pendientes2', 'icono': Icons.calendar_today, 'color': Colors.blueGrey, 'ruta': const LaboratoriosScreen()},
+            // {'nombre': 'Pendientes3', 'icono': Icons.calendar_today, 'color': Colors.lime, 'ruta': const LaboratoriosScreen()},
+          ];
           return WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
                 backgroundColor: Colors.white.withOpacity(1),
-                appBar: AppBar(
-                elevation: 1,
-                shadowColor: myColor,
-                // automaticallyImplyLeading: false,
-                centerTitle: true,
-                backgroundColor: Colors.white,
-                title: const Text(nameVersion,
-                    style: TextStyle(color: myColor)),
-                actions: <Widget>[
-                  PopupMenuButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.more_vert_outlined,
-                          color: myColor),
-                      itemBuilder: (context) {
-                        return [
-                          const PopupMenuItem<int>(
-                            value: 1,
-                            child: Text("Cerrar sesión",
-                                style: TextStyle(
-                                    color: myColor)),
-                          ),
-                        ];
-                      },
-                      onSelected: (value) {
-                        if (value == 1) {
-                          _onWillPop1();
-                        }
-                        // else if (value == 2) {
-                        //   _onWillPop2();
-                        // }
-                      }),
-                  ],
-                ),
-                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp),
+                appBar: myAppBar(context, nameApp),
+                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
                 resizeToAvoidBottomInset: false,
                 body: Container(
                   decoration: BoxDecoration(
@@ -130,7 +101,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         children: [
                           InkWell(
                             onTap: () {
-                              print("Seleccionaste: ${modulos[index]['nombre']}");
+                              //print("Seleccionaste: ${modulos[index]['nombre']}");
+                              Navigator.of(context).push(
+                              PageRouteBuilder(
+                                barrierColor: Colors.black.withOpacity(0.6),
+                                opaque: false,
+                                pageBuilder: (_, __, ___) => modulos[index]['ruta'],
+                                transitionDuration: const Duration(milliseconds: 200),
+                                transitionsBuilder: (_, animation, __, child) {
+                                  return BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                      sigmaX: 5 * animation.value,
+                                      sigmaY: 5 * animation.value,
+                                    ),
+                                    child: FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
                             },
                             child: Stack(
                               children: [
@@ -168,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         modulos[index]['nombre'],
                                         style: const TextStyle(
                                           fontSize: 20,
-                                          color: Colors.black87,
+                                          color: myColor,
                                         ),
                                       ),
                                     ],
@@ -182,74 +173,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     },
                   ),
                   )
-                ),
-                floatingActionButtonLocation: ExpandableFab.location,
-                floatingActionButton: ExpandableFab(
-                  key: _key,
-                  type: ExpandableFabType.up,
-                  childrenAnimation: ExpandableFabAnimation.none,
-                  distance: 70,
-                  overlayStyle: ExpandableFabOverlayStyle(
-                    color: Colors.black.withOpacity(0.7),
-                  ),
-                  children: [
-                    Row(
-                      children: [
-                        const Text('Cena', style: TextStyle(fontSize: 20, color: myColor)),
-                        const SizedBox(width: 20),
-                        FloatingActionButton.small(
-                          heroTag: null,
-                          backgroundColor: const Color.fromRGBO(55, 171, 204, 1), // Color de fondo del botón
-                          onPressed: () {
-                            print("cena");
-                          },
-                          child: const Icon(Icons.mode_night_outlined),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text('Comida', style: TextStyle(fontSize: 20, color: myColor)),
-                        const SizedBox(width: 20),
-                        FloatingActionButton.small(
-                          heroTag: null,
-                          backgroundColor: const Color.fromRGBO(55, 171, 204, 1), // Color de fondo del botón
-                          onPressed: () {
-                            print("comida");
-                          },
-                          child: const Icon(Icons.dinner_dining_outlined),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text('Desayuno', style: TextStyle(fontSize: 20, color: myColor)),
-                        const SizedBox(width: 20),
-                        FloatingActionButton.small(
-                          heroTag: null,
-                          backgroundColor: const Color.fromRGBO(55, 171, 204, 1), // Color de fondo del botón
-                          onPressed: () {
-                            print("desayuno");
-                          },
-                          child: const Icon(Icons.free_breakfast),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text('Ayuno', style: TextStyle(fontSize: 20, color: myColor)),
-                        const SizedBox(width: 20),
-                        FloatingActionButton.small(
-                          heroTag: null,
-                          backgroundColor: const Color.fromRGBO(55, 171, 204, 1), // Color de fondo del botón
-                          onPressed: () {
-                            print("ayuno");
-                          },
-                          child: const Icon(Icons.wb_sunny_outlined),
-                        ),
-                      ],
-                    ),
-                  ],
                 ),
               ),
           );
@@ -281,35 +204,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
               ElevatedButton(
                 onPressed: () => SystemNavigator.pop(),
-                child: const Text('Si'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
-  }
-
-  Future<bool> _onWillPop1() async {
-    return (await showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Cerrar sesión'),
-            content: const Text('¿Deseas cerrar sesión?'),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await prefs.remove("user");
-                  Navigator.pushReplacementNamed(context, 'login');
-                },
                 child: const Text('Si'),
               ),
             ],

@@ -1,13 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:recuperacion/constants/constants.dart';
+import 'package:recuperacion/presentation/screens/glucosa/glucosa_screen.dart';
+import 'package:recuperacion/presentation/screens/presion/presion_screen.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/laboratorios/laboratorios_screen.dart';
 import '../screens/users/usuario_screen.dart';
 
 class SideMenu extends StatefulWidget {
   final String? user;
   final String? tipoapp;
-  const SideMenu({Key? key, required this.user, this.tipoapp}) : super(key: key);
+  final String idPaciente;
+  const SideMenu({Key? key, required this.user, this.tipoapp, required this.idPaciente}) : super(key: key);
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -19,6 +23,7 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final String _idPaciente = widget.idPaciente;
     return NavigationDrawer(
       backgroundColor: Colors.white,
       selectedIndex: navDrawerIndex,
@@ -53,7 +58,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  pageBuilder: (_, __, ___) => GlucosaScreen(idPaciente: _idPaciente),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -75,7 +80,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  pageBuilder: (_, __, ___) => PresionScreen(idPaciente: _idPaciente),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -119,7 +124,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  pageBuilder: (_, __, ___) => const LaboratoriosScreen(),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
