@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:recuperacion/constants/constants.dart';
 import 'package:recuperacion/presentation/screens/glucosa/glucosa_screen.dart';
 import 'package:recuperacion/presentation/screens/presion/presion_screen.dart';
+import 'package:recuperacion/presentation/screens/receta/receta_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,12 +30,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String? _tipoapp;
   String? _userapp;
   String? _idPaciente;
+  String? _idReceta;
 
   Future<bool?> getVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
     _idPaciente = prefs.getString("id_paciente");
+    _idReceta = prefs.getString("id_receta");
     return false;
   }
 
@@ -67,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       builder: (context, snapshot) {
         if (snapshot.data == false) {
           modulos = [
-            {'nombre': 'Glucosa', 'icono': Icons.person, 'color': Colors.green, 'ruta': GlucosaScreen(idPaciente: _idPaciente!.toString())},
-            {'nombre': 'Presión Arterial', 'icono': Icons.settings, 'color': Colors.yellow[600], 'ruta': PresionScreen(idPaciente: _idPaciente!.toString())},
-            {'nombre': 'Receta', 'icono': Icons.bar_chart, 'color': Colors.red, 'ruta': const LaboratoriosScreen()},
-            {'nombre': 'Laboratorios', 'icono': Icons.message, 'color': Colors.deepPurple, 'ruta': const LaboratoriosScreen()},
+            {'nombre': 'Glucosa', 'icono': Icons.water_drop_outlined, 'color': Colors.green, 'ruta': GlucosaScreen(idPaciente: _idPaciente!.toString(), idReceta: _idReceta!.toString())},
+            {'nombre': 'Presión Arterial', 'icono': Icons.favorite_border, 'color': Colors.yellow[600], 'ruta': PresionScreen(idPaciente: _idPaciente!.toString(), idReceta: _idReceta!.toString())},
+            {'nombre': 'Receta', 'icono': Icons.medication, 'color': Colors.red, 'ruta': RecetaScreen(idPaciente: _idPaciente.toString(), idReceta: _idReceta!.toString())},
+            {'nombre': 'Laboratorios', 'icono': Icons.assignment, 'color': Colors.deepPurple, 'ruta': const LaboratoriosScreen()},
             // {'nombre': 'Alimentación', 'icono': Icons.calendar_today, 'color': Colors.orange, 'ruta': const LaboratoriosScreen()},
             // {'nombre': 'Pendientes', 'icono': Icons.calendar_today, 'color': Colors.blue, 'ruta': const LaboratoriosScreen()},
             // {'nombre': 'Pendientes2', 'icono': Icons.calendar_today, 'color': Colors.blueGrey, 'ruta': const LaboratoriosScreen()},
@@ -81,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             child: Scaffold(
                 backgroundColor: Colors.white.withOpacity(1),
                 appBar: myAppBar(context, nameApp),
-                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
+                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!, idReceta: _idReceta!,),
                 resizeToAvoidBottomInset: false,
                 body: Container(
                   decoration: BoxDecoration(

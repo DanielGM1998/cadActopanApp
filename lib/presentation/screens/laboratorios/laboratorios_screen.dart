@@ -24,6 +24,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
   String? _tipoapp;
   String? _userapp;
   String? _idPaciente;
+  String? _idReceta;
 
   late List<dynamic> laboratorios;
 
@@ -32,6 +33,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
     _idPaciente = prefs.getString("id_paciente");
+    _idReceta = prefs.getString("id_receta");
     return false;
   }
 
@@ -74,7 +76,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                   child: Scaffold(
                       backgroundColor: Colors.white.withOpacity(1),
                       appBar: myAppBar(context, nameLaboratorios),
-                      drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
+                      drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!, idReceta: _idReceta!),
                       resizeToAvoidBottomInset: false,
                       body: Container(
                         decoration: BoxDecoration(
@@ -156,62 +158,37 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                 );
               } else if (snapshot.data == false) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return WillPopScope(
-                    onWillPop: _onWillPop,
-                    child: Scaffold(
-                        backgroundColor: Colors.white.withOpacity(1),
-                        appBar: myAppBar(context, nameLaboratorios),
-                        drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
-                        resizeToAvoidBottomInset: false,
-                        body: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: const Alignment(0.0, 1.3),
-                              colors: colors,
-                              tileMode: TileMode.repeated,
-                            ),
-                          ),
-                          child: const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: 
-                            Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          )
-                        ),
-                      ),
-                  );
+                  return const SizedBox(height: 0, width: 0);
                 }
               } else if (snapshot.hasError) {
-                return WillPopScope(
-                  onWillPop: _onWillPop,
-                  child: Scaffold(
-                      backgroundColor: Colors.white.withOpacity(1),
-                      appBar: myAppBar(context, nameLaboratorios),
-                      drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
-                      resizeToAvoidBottomInset: false,
-                      body: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: const Alignment(0.0, 1.3),
-                            colors: colors,
-                            tileMode: TileMode.repeated,
-                          ),
-                        ),
-                        child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: 
-                          Center(
-                            child: Text("${snapshot.error}"),
-                          )
-                        )
+                return const SizedBox(height: 0, width: 0);
+              }
+              return WillPopScope(
+                onWillPop: _onWillPop,
+                child: Scaffold(
+                  backgroundColor: Colors.white.withOpacity(1),
+                  appBar: myAppBar(context, nameLaboratorios),
+                  drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!, idReceta: _idReceta!),
+                  resizeToAvoidBottomInset: false,
+                  body: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: const Alignment(0.0, 1.3),
+                        colors: colors,
+                        tileMode: TileMode.repeated,
                       ),
                     ),
-                );
-              }
-              return const SizedBox(height: 0, width: 0);
+                    child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: 
+                      Center(
+                        child: CircularProgressIndicator(color: myColor),
+                      )
+                    )
+                  ),
+                ),
+              );
             }
           );
         } else if (snapshot.data == true) {

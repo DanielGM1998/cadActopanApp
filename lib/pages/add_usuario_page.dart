@@ -12,7 +12,7 @@ import 'package:recuperacion/pages/empleado_page.dart';
 import 'package:recuperacion/pages/falta_page.dart';
 import 'package:recuperacion/presentation/screens/home/home_screen.dart';
 import 'package:recuperacion/pages/retardo_page.dart';
-import 'package:recuperacion/presentation/screens/users/usuario_screen.dart';
+import 'package:recuperacion/pages/usuario_screen.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;

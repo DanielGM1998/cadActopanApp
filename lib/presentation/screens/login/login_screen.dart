@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:recuperacion/presentation/screens/home/home_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,18 @@ class _LoginScreenState extends State<LoginScreen> {
   String _contrasena = "";
   bool _passwordVisible = true;
   var textController = TextEditingController();
+
+  Future<void> checkStoragePermission() async {
+    if (await Permission.storage.request().isGranted) {
+      // Permiso otorgado
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkStoragePermission();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -398,11 +411,12 @@ Future<String> _check(telefono, pass) async {
       String body3 = utf8.decode(response.bodyBytes);
       var jsonData = jsonDecode(body3);
       if(jsonData['success']==true){
+        print(jsonData);
         print(jsonData['paciente']);
         if(jsonData['paciente']['admin']==true){
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente'];
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente']+","+jsonData['paciente']['id_receta'];
         }else{
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente'];
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente']+","+jsonData['paciente']['id_receta'];
         }
       }else{
         return 'Verifique sus datos';
@@ -449,6 +463,7 @@ Future<void> showResultDialog(
     prefs.setString('user', splitted[1]);
     prefs.setString('tipo_app', splitted[2]);
     prefs.setString('id_paciente', splitted[3]);
+    prefs.setString('id_receta', splitted[4]);
     Navigator.of(context).push(
       PageRouteBuilder(
         barrierColor: Colors.black.withOpacity(0.6),

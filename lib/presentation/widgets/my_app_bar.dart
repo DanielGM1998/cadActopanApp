@@ -23,6 +23,9 @@ AppBar myAppBar(BuildContext context, String name) {
               SharedPreferences prefs =
                   await SharedPreferences.getInstance();
               await prefs.remove("user");
+              await prefs.remove("id_paciente");
+              await prefs.remove("tipo_app");
+              await prefs.remove("id_receta");
               Navigator.pushReplacementNamed(context, 'login');
             },
             child: const Text('Si'),
@@ -60,18 +63,18 @@ AppBar myAppBar(BuildContext context, String name) {
               value: 1,
               child: Text("Cerrar sesión", style: TextStyle(color: myColor)),
             ),
-            PopupMenuItem<int>(
-              value: 2,
-              child: Text("Contacto", style: TextStyle(color: myColor)),
-            ),
+            // PopupMenuItem<int>(
+            //   value: 2,
+            //   child: Text("Contacto", style: TextStyle(color: myColor)),
+            // ),
           ];
         },
         onSelected: (value) {
           if (value == 1) {
             _onWillPop1(); // Asegúrate de tener definida esta función
-          } else if (value == 2) {
-            // Acción para el segundo menú
           }
+          // else if (value == 2) {
+          //}
         },
       ),
     ],

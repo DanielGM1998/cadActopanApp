@@ -10,7 +10,11 @@ const nameGlucosa = "Glucosa";
 
 const namePresion = "Presión Arterial";
 
+const nameReceta = "Receta actual";
+
 const nameLaboratorios = "Laboratorios";
+
+const nameContacto = "Contacto";
 
 const Color myColor = Color.fromRGBO(104, 145, 208,1);
 

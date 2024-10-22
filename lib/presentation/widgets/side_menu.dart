@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:recuperacion/constants/constants.dart';
 import 'package:recuperacion/presentation/screens/glucosa/glucosa_screen.dart';
 import 'package:recuperacion/presentation/screens/presion/presion_screen.dart';
+import '../screens/contacto/contacto_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/laboratorios/laboratorios_screen.dart';
-import '../screens/users/usuario_screen.dart';
+import '../screens/receta/receta_screen.dart';
 
 class SideMenu extends StatefulWidget {
   final String? user;
   final String? tipoapp;
   final String idPaciente;
-  const SideMenu({Key? key, required this.user, this.tipoapp, required this.idPaciente}) : super(key: key);
+  final String idReceta;
+  const SideMenu({Key? key, required this.user, this.tipoapp, required this.idPaciente, required this.idReceta}) : super(key: key);
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -23,7 +25,6 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final String _idPaciente = widget.idPaciente;
     return NavigationDrawer(
       backgroundColor: Colors.white,
       selectedIndex: navDrawerIndex,
@@ -58,7 +59,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => GlucosaScreen(idPaciente: _idPaciente),
+                  pageBuilder: (_, __, ___) => GlucosaScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -80,7 +81,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => PresionScreen(idPaciente: _idPaciente),
+                  pageBuilder: (_, __, ___) => PresionScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -102,7 +103,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  pageBuilder: (_, __, ___) => RecetaScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -146,7 +147,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  pageBuilder: (_, __, ___) => ContactoScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -163,7 +164,7 @@ class _SideMenuState extends State<SideMenu> {
                 ),
               );
               break;
-            case 6:
+            /*case 6:
               Navigator.of(context).push(
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
@@ -250,7 +251,7 @@ class _SideMenuState extends State<SideMenu> {
                   },
                 ),
               );
-              break;
+              break;*/
             default:
               Navigator.of(context).push(
                 PageRouteBuilder(
@@ -317,7 +318,7 @@ class _SideMenuState extends State<SideMenu> {
         ),
         const NavigationDrawerDestination(
             icon: Icon(
-              Icons.abc,
+              Icons.water_drop_outlined,
               color: myColor,
             ),
             label: Text(
@@ -333,7 +334,7 @@ class _SideMenuState extends State<SideMenu> {
         ),
         const NavigationDrawerDestination(
             icon: Icon(
-              Icons.qr_code,
+              Icons.favorite_border,
               color: myColor,
             ),
             label: Text(
@@ -349,7 +350,7 @@ class _SideMenuState extends State<SideMenu> {
         ),
         const NavigationDrawerDestination(
             icon: Icon(
-              Icons.dangerous,
+              Icons.medication,
               color: myColor,
             ),
             label: Text(
@@ -365,7 +366,7 @@ class _SideMenuState extends State<SideMenu> {
         ),
         const NavigationDrawerDestination(
             icon: Icon(
-              Icons.cabin_outlined,
+              Icons.assignment,
               color: myColor,
             ),
             label: Text(
@@ -381,11 +382,11 @@ class _SideMenuState extends State<SideMenu> {
         ),
         const NavigationDrawerDestination(
             icon: Icon(
-              Icons.vaccines,
+              Icons.contact_support_outlined,
               color: myColor,
             ),
             label: Text(
-              "Alimentación",
+              "Contacto",
               style: TextStyle(color: myColor),
             )),
         const Divider(
@@ -395,6 +396,7 @@ class _SideMenuState extends State<SideMenu> {
           endIndent: 20,
           color: myColor,
         ),
+        /*
         const NavigationDrawerDestination(
             icon: Icon(
               Icons.baby_changing_station,
@@ -462,7 +464,7 @@ class _SideMenuState extends State<SideMenu> {
           endIndent: 20,
           color: myColor,
         )
-        : const SizedBox.shrink(),
+        : const SizedBox.shrink(),*/
       ],
     );
   }

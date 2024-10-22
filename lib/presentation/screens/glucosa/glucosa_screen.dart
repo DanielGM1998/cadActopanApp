@@ -19,9 +19,10 @@ class GlucosaScreen extends StatefulWidget {
   static const String routeName = 'glucosa';
 
   final String idPaciente;
+  final String idReceta;
 
   const GlucosaScreen({
-    Key? key, required this.idPaciente,
+    Key? key, required this.idPaciente, required this.idReceta,
   }) : super(key: key);
 
   @override
@@ -192,7 +193,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
             child: Scaffold(
               backgroundColor: Colors.white.withOpacity(1),
               appBar: myAppBar(context, nameGlucosa),
-              drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente,),
+              drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente,idReceta: widget.idReceta),
               resizeToAvoidBottomInset: false,
               body: Stack(
                 children: [
@@ -229,7 +230,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                         return setState(() {});
                       },
                       child: isFirstLoadRunning
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(child: CircularProgressIndicator(color: myColor,))
                           : Column(children: [
                               Expanded(
                                   child: ListView.builder(

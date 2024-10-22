@@ -7,6 +7,7 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:recuperacion/constants/constants.dart';
 import 'package:recuperacion/models/usuario_model.dart';
 import 'package:recuperacion/pages/add_usuario_page.dart';
 import 'package:recuperacion/pages/asistencia_page.dart';
@@ -365,7 +366,7 @@ class _UsuarioScreenState extends State<UsuarioScreen> {
                           AsyncSnapshot<AppDataUsuario> snapshot) {
                         if (!snapshot.hasData) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(color: myColor,),
                           );
                         } else {
                           if (results.isEmpty) {
