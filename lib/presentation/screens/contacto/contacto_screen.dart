@@ -11,10 +11,9 @@ class ContactoScreen extends StatefulWidget {
   static const String routeName = 'contacto';
 
   final String idPaciente;
-  final String idReceta;
 
   const ContactoScreen({
-    Key? key, required this.idPaciente, required this.idReceta,
+    Key? key, required this.idPaciente,
   }) : super(key: key);
 
   @override
@@ -63,7 +62,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
             child: Scaffold(
                 backgroundColor: Colors.white.withOpacity(1),
                 appBar: myAppBar(context, nameContacto),
-                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente),
                 resizeToAvoidBottomInset: false,
                 body: Container(
                     decoration: BoxDecoration(

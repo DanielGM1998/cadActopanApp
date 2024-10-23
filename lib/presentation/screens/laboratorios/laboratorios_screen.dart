@@ -24,7 +24,6 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
   String? _tipoapp;
   String? _userapp;
   String? _idPaciente;
-  String? _idReceta;
 
   late List<dynamic> laboratorios;
 
@@ -33,7 +32,6 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
     _idPaciente = prefs.getString("id_paciente");
-    _idReceta = prefs.getString("id_receta");
     return false;
   }
 
@@ -76,7 +74,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                   child: Scaffold(
                       backgroundColor: Colors.white.withOpacity(1),
                       appBar: myAppBar(context, nameLaboratorios),
-                      drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!, idReceta: _idReceta!),
+                      drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
                       resizeToAvoidBottomInset: false,
                       body: Container(
                         decoration: BoxDecoration(
@@ -168,7 +166,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                 child: Scaffold(
                   backgroundColor: Colors.white.withOpacity(1),
                   appBar: myAppBar(context, nameLaboratorios),
-                  drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!, idReceta: _idReceta!),
+                  drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
                   resizeToAvoidBottomInset: false,
                   body: Container(
                     decoration: BoxDecoration(

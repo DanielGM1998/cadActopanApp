@@ -30,14 +30,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String? _tipoapp;
   String? _userapp;
   String? _idPaciente;
-  String? _idReceta;
 
   Future<bool?> getVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
     _idPaciente = prefs.getString("id_paciente");
-    _idReceta = prefs.getString("id_receta");
     return false;
   }
 
@@ -70,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       builder: (context, snapshot) {
         if (snapshot.data == false) {
           modulos = [
-            {'nombre': 'Glucosa', 'icono': Icons.water_drop_outlined, 'color': Colors.green, 'ruta': GlucosaScreen(idPaciente: _idPaciente!.toString(), idReceta: _idReceta!.toString())},
-            {'nombre': 'Presión Arterial', 'icono': Icons.favorite_border, 'color': Colors.yellow[600], 'ruta': PresionScreen(idPaciente: _idPaciente!.toString(), idReceta: _idReceta!.toString())},
-            {'nombre': 'Receta', 'icono': Icons.medication, 'color': Colors.red, 'ruta': RecetaScreen(idPaciente: _idPaciente.toString(), idReceta: _idReceta!.toString())},
+            {'nombre': 'Glucosa', 'icono': Icons.water_drop_outlined, 'color': Colors.green, 'ruta': GlucosaScreen(idPaciente: _idPaciente!.toString())},
+            {'nombre': 'Presión Arterial', 'icono': Icons.favorite_border, 'color': Colors.yellow[600], 'ruta': PresionScreen(idPaciente: _idPaciente!.toString())},
+            {'nombre': 'Receta', 'icono': Icons.medication, 'color': Colors.red, 'ruta': RecetaScreen(idPaciente: _idPaciente.toString())},
             {'nombre': 'Laboratorios', 'icono': Icons.assignment, 'color': Colors.deepPurple, 'ruta': const LaboratoriosScreen()},
             // {'nombre': 'Alimentación', 'icono': Icons.calendar_today, 'color': Colors.orange, 'ruta': const LaboratoriosScreen()},
             // {'nombre': 'Pendientes', 'icono': Icons.calendar_today, 'color': Colors.blue, 'ruta': const LaboratoriosScreen()},
@@ -84,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             child: Scaffold(
                 backgroundColor: Colors.white.withOpacity(1),
                 appBar: myAppBar(context, nameApp),
-                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!, idReceta: _idReceta!,),
+                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: _idPaciente!),
                 resizeToAvoidBottomInset: false,
                 body: Container(
                   decoration: BoxDecoration(

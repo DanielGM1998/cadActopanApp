@@ -19,10 +19,9 @@ class GlucosaScreen extends StatefulWidget {
   static const String routeName = 'glucosa';
 
   final String idPaciente;
-  final String idReceta;
 
   const GlucosaScreen({
-    Key? key, required this.idPaciente, required this.idReceta,
+    Key? key, required this.idPaciente,
   }) : super(key: key);
 
   @override
@@ -193,7 +192,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
             child: Scaffold(
               backgroundColor: Colors.white.withOpacity(1),
               appBar: myAppBar(context, nameGlucosa),
-              drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente,idReceta: widget.idReceta),
+              drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente),
               resizeToAvoidBottomInset: false,
               body: Stack(
                 children: [

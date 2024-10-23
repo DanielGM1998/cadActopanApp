@@ -18,10 +18,9 @@ class PresionScreen extends StatefulWidget {
   static const String routeName = 'presion';
 
   final String idPaciente;
-  final String idReceta;
 
   const PresionScreen({
-    Key? key, required this.idPaciente, required this.idReceta,
+    Key? key, required this.idPaciente,
   }) : super(key: key);
 
   @override
@@ -193,7 +192,7 @@ class _PresionScreenState extends State<PresionScreen> {
             child: Scaffold(
               backgroundColor: Colors.white.withOpacity(1),
               appBar: myAppBar(context, namePresion),
-              drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+              drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente),
               resizeToAvoidBottomInset: false,
               body: Stack(
                 children: [

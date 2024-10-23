@@ -12,8 +12,7 @@ class SideMenu extends StatefulWidget {
   final String? user;
   final String? tipoapp;
   final String idPaciente;
-  final String idReceta;
-  const SideMenu({Key? key, required this.user, this.tipoapp, required this.idPaciente, required this.idReceta}) : super(key: key);
+  const SideMenu({Key? key, required this.user, this.tipoapp, required this.idPaciente}) : super(key: key);
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -59,7 +58,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => GlucosaScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+                  pageBuilder: (_, __, ___) => GlucosaScreen(idPaciente: widget.idPaciente),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -81,7 +80,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => PresionScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+                  pageBuilder: (_, __, ___) => PresionScreen(idPaciente: widget.idPaciente),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -103,7 +102,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => RecetaScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+                  pageBuilder: (_, __, ___) => RecetaScreen(idPaciente: widget.idPaciente),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(
@@ -147,7 +146,7 @@ class _SideMenuState extends State<SideMenu> {
                 PageRouteBuilder(
                   barrierColor: Colors.black.withOpacity(0.6),
                   opaque: false,
-                  pageBuilder: (_, __, ___) => ContactoScreen(idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+                  pageBuilder: (_, __, ___) => ContactoScreen(idPaciente: widget.idPaciente),
                   transitionDuration: const Duration(milliseconds: 200),
                   transitionsBuilder: (_, animation, __, child) {
                     return BackdropFilter(

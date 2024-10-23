@@ -30,16 +30,20 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _passwordVisible = true;
   var textController = TextEditingController();
 
-  Future<void> checkStoragePermission() async {
-    if (await Permission.storage.request().isGranted) {
-      // Permiso otorgado
+  Future<void> requestStoragePermission() async {
+    // Solicitar permiso de almacenamiento
+    var status = await Permission.storage.request();
+    if (status == PermissionStatus.granted) {
+      print('Permiso de almacenamiento otorgado');
+    } else {
+      print('Permiso de almacenamiento denegado');
     }
   }
 
   @override
   void initState() {
     super.initState();
-    checkStoragePermission();
+    //requestStoragePermission();
   }
 
   @override
@@ -414,9 +418,9 @@ Future<String> _check(telefono, pass) async {
         print(jsonData);
         print(jsonData['paciente']);
         if(jsonData['paciente']['admin']==true){
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente']+","+jsonData['paciente']['id_receta'];
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente'];
         }else{
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente']+","+jsonData['paciente']['id_receta'];
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente'];
         }
       }else{
         return 'Verifique sus datos';
@@ -434,11 +438,11 @@ showProgress(BuildContext context, String telefono, String pass) async {
     context: context,
     builder: (context) => FutureProgressDialog(_check(telefono, pass)),
   );
-  showResultDialog(context, result, telefono);
+  showResultDialog(context, result, telefono, pass);
 }
 
 Future<void> showResultDialog(
-    BuildContext context, String result, String telefono) async {
+    BuildContext context, String result, String telefono, String pass) async {
   var splitted = result.split(',');
   if (result == 'Error, verificar conexión a Internet') {
     Fluttertoast.showToast(
@@ -463,7 +467,8 @@ Future<void> showResultDialog(
     prefs.setString('user', splitted[1]);
     prefs.setString('tipo_app', splitted[2]);
     prefs.setString('id_paciente', splitted[3]);
-    prefs.setString('id_receta', splitted[4]);
+    prefs.setString('telefono', telefono);
+    prefs.setString('pass', pass);
     Navigator.of(context).push(
       PageRouteBuilder(
         barrierColor: Colors.black.withOpacity(0.6),

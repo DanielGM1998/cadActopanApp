@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -17,10 +18,9 @@ class RecetaScreen extends StatefulWidget {
   static const String routeName = 'receta';
 
   final String idPaciente;
-  final String idReceta;
 
   const RecetaScreen({
-    Key? key, required this.idPaciente, required this.idReceta,
+    Key? key, required this.idPaciente
   }) : super(key: key);
 
   @override
@@ -30,6 +30,9 @@ class RecetaScreen extends StatefulWidget {
 class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderStateMixin {
   String? _tipoapp;
   String? _userapp;
+  String? _telefono;
+  String? _pass;
+  String? _idReceta;
 
   // Ruta local del archivo PDF
   String? localFilePath;
@@ -42,18 +45,24 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
+    _telefono = prefs.getString("telefono");
+    _pass = prefs.getString("pass");
     return false;
   }
 
   Future<void> requestStoragePermission() async {
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
+    // Solicitar permiso de almacenamiento
+    var status = await Permission.storage.request();
+    if (status == PermissionStatus.granted) {
+      print('Permiso de almacenamiento otorgado');
+    } else {
+      print('Permiso de almacenamiento denegado');
     }
   }
 
   // Función para verificar si el PDF ya ha sido descargado
   Future<bool> checkAndDownloadPDF() async {
+    print(_idReceta!);
     //Directory appDocDir = await getApplicationDocumentsDirectory();
     Directory? appDocDir;
     if (Platform.isAndroid) {
@@ -70,7 +79,7 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
       appDocDir = await getApplicationDocumentsDirectory();
     }
 
-    String filePath = '${appDocDir.path}/receta_'+widget.idPaciente+'_'+widget.idReceta+'.pdf';
+    String filePath = '${appDocDir.path}/receta_'+widget.idPaciente+'_'+_idReceta!+'.pdf';
     print(filePath);
     File file = File(filePath);
     print(await file.exists());
@@ -88,7 +97,7 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
   }
 
   Future<void> downloadPDF(String path) async {
-    pdfUrl = "https://v8.cadactopan.com.mx/data/recetas/receta_"+widget.idPaciente+"_"+widget.idReceta+".pdf";
+    pdfUrl = "https://v8.cadactopan.com.mx/data/recetas/receta_"+widget.idPaciente+"_"+_idReceta!+".pdf";
     print(pdfUrl);
     try {
       final response = await http.get(Uri.parse(pdfUrl!));
@@ -97,6 +106,10 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
         File file = File(path);
         await file.writeAsBytes(response.bodyBytes);
         print('Archivo guardado en: $path');
+        setState(() {
+          localFilePath = path;
+          isDownloaded = true;
+        });
       } else {
         print('Error: código de estado ${response.statusCode}');
       }
@@ -111,7 +124,9 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
   void initState() {
     super.initState();
     requestStoragePermission().then((_) {
-      checkAndDownloadPDF();
+      _checkIdReceta(_telefono, _pass).then((_) {
+        checkAndDownloadPDF();
+      });
     });
   }
 
@@ -129,28 +144,30 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
             child: Scaffold(
                 backgroundColor: Colors.white.withOpacity(1),
                 appBar: myAppBar(context, nameReceta),
-                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente, idReceta: widget.idReceta),
+                drawer: SideMenu(user: _userapp, tipoapp: _tipoapp, idPaciente: widget.idPaciente),
                 resizeToAvoidBottomInset: false,
                 body: isDownloaded && localFilePath != null
                   ? Builder(
                       builder: (context) {
                         try {
-                          return PDFView(
-                            filePath: localFilePath!,
-                            enableSwipe: true,
-                            swipeHorizontal: true,
-                            autoSpacing: false,
-                            pageFling: true,
-                            onRender: (pages) {
-                              setState(() {});
-                            },
-                            onError: (error) {
-                              print('Error al abrir el PDF: $error');
-                            },
-                            onPageError: (page, error) {
-                              print('Error en la página $page: $error');
-                            },
-                          );
+                          return isDownloaded && localFilePath != null
+                          ? PDFView(
+                              filePath: localFilePath!,
+                              enableSwipe: true,
+                              swipeHorizontal: true,
+                              autoSpacing: false,
+                              pageFling: true,
+                              onRender: (pages) {
+                                setState(() {});
+                              },
+                              onError: (error) {
+                                print('Error al abrir el PDF: $error');
+                              },
+                              onPageError: (page, error) {
+                                print('Error en la página $page: $error');
+                              },
+                            )
+                          : const CircularProgressIndicator(color: myColor);
                         } catch (e) {
                           print('Error al intentar mostrar el PDF: $e');
                           return const Center(child: Text('Error al mostrar el PDF'));
@@ -194,5 +211,33 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
           ),
         )) ??
         false;
+  }
+
+  Future<String> _checkIdReceta(_telefono, _pass) async {
+    try {
+      var data = {"telefono": _telefono, "password": _pass};
+      final response = await http.post(
+          Uri( 
+            scheme: 'https',
+            host: 'v8.cadactopan.com.mx',
+            path: '/api/login',
+          ),
+          body: data,
+        );
+      if (response.statusCode == 200) {
+        String body3 = utf8.decode(response.bodyBytes);
+        var jsonData = jsonDecode(body3);
+        if(jsonData['success']==true){
+          _idReceta = jsonData['paciente']['id_receta'];
+          return jsonData['paciente']['id_receta'];
+        }else{
+          return 'Verifique sus datos';
+        }
+      } else {
+        return 'Error, verificar conexión a Internet';
+      }
+    } catch (e) {
+      return 'Error, verificar conexión a Internet';
+    }
   }
 }
