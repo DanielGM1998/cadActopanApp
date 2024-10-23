@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,38 +52,49 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
   }
 
   Future<void> requestStoragePermission() async {
-    // Solicitar permiso de almacenamiento
-    var status = await Permission.storage.request();
-    if (status == PermissionStatus.granted) {
-      print('Permiso de almacenamiento otorgado');
-    } else {
-      print('Permiso de almacenamiento denegado');
-    }
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    if (defaultTargetPlatform == TargetPlatform.android && androidInfo.version.sdkInt <= 32) {
+      await Permission.storage.request();
+      //var status = await Permission.storage.request();
+      // if (status == PermissionStatus.granted) {
+      //   print('Permiso de almacenamiento otorgado');
+      // } else {
+      //   print('Permiso de almacenamiento denegado');
+      // }
+    } 
+    //else {
+      // await Permission.manageExternalStorage.request();
+      // openAppSettings();
+      // await Permission.photos.request();
+      // await Permission.videos.request();
+      // await Permission.audio.request();
+    //}
   }
 
   // Función para verificar si el PDF ya ha sido descargado
   Future<bool> checkAndDownloadPDF() async {
-    print(_idReceta!);
-    //Directory appDocDir = await getApplicationDocumentsDirectory();
-    Directory? appDocDir;
-    if (Platform.isAndroid) {
-      if (await Permission.storage.isGranted) {
-        appDocDir = Directory('/storage/emulated/0/Download');
-      } else {
-        // Permiso denegado
-        print("Permiso denegado");
-        return false;
-      }
-    } else if (Platform.isIOS) {
-      appDocDir = await getApplicationDocumentsDirectory();
-    } else {
-      appDocDir = await getApplicationDocumentsDirectory();
-    }
+    //print(_idReceta!);
+
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    // Directory? appDocDir;
+    // if (Platform.isAndroid) {
+    //   //if (await Permission.storage.isGranted) {
+    //     //appDocDir = Directory('/storage/emulated/0/Download');
+    //     appDocDir = await getApplicationDocumentsDirectory();
+    //   //} else {
+    //     // Permiso denegado
+    //     //print("Permiso denegado");
+    //     //return false;
+    //   //}
+    // } else if (Platform.isIOS) {
+    //   appDocDir = await getApplicationDocumentsDirectory();
+    // } else {
+    //   appDocDir = await getApplicationDocumentsDirectory();
+    // }
 
     String filePath = '${appDocDir.path}/receta_'+widget.idPaciente+'_'+_idReceta!+'.pdf';
-    print(filePath);
     File file = File(filePath);
-    print(await file.exists());
     if (await file.exists()) {
       // El archivo ya existe localmente
       setState(() {
@@ -98,20 +110,19 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
 
   Future<void> downloadPDF(String path) async {
     pdfUrl = "https://v8.cadactopan.com.mx/data/recetas/receta_"+widget.idPaciente+"_"+_idReceta!+".pdf";
-    print(pdfUrl);
     try {
       final response = await http.get(Uri.parse(pdfUrl!));
       if (response.statusCode == 200) {
-        print('Tamaño del archivo: ${response.bodyBytes.length} bytes');
+        //print('Tamaño del archivo: ${response.bodyBytes.length} bytes');
         File file = File(path);
         await file.writeAsBytes(response.bodyBytes);
-        print('Archivo guardado en: $path');
+        //print('Archivo guardado en: $path');
         setState(() {
           localFilePath = path;
           isDownloaded = true;
         });
       } else {
-        print('Error: código de estado ${response.statusCode}');
+        //print('Error: código de estado ${response.statusCode}');
       }
     } catch (e) {
       if (kDebugMode) {
@@ -161,15 +172,15 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
                                 setState(() {});
                               },
                               onError: (error) {
-                                print('Error al abrir el PDF: $error');
+                                //print('Error al abrir el PDF: $error');
                               },
                               onPageError: (page, error) {
-                                print('Error en la página $page: $error');
+                                //print('Error en la página $page: $error');
                               },
                             )
                           : const CircularProgressIndicator(color: myColor);
                         } catch (e) {
-                          print('Error al intentar mostrar el PDF: $e');
+                          //print('Error al intentar mostrar el PDF: $e');
                           return const Center(child: Text('Error al mostrar el PDF'));
                         }
                       },

@@ -286,7 +286,7 @@ class _SideMenuState extends State<SideMenu> {
             children: [
               Image.asset(
                 myLogo,
-                height: size.height * 0.08,
+                height: size.height * 0.07,
                 width: size.width * 0.5,
               ),
               SizedBox(height: size.width * 0.01),
