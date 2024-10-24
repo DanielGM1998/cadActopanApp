@@ -16,6 +16,24 @@ const nameLaboratorios = "Laboratorios";
 
 const nameContacto = "Contacto";
 
+const sucursalActopan = "Sucursal Actopan";
+const direccionActopan = "Chapultepec No. 172, Col. Chapultepec, Actopan, Hidalgo, C.P. 425000";
+const correoActopan = "centrodeatencionaldiabetico@gmail.com";
+const whatsappActopan = "772 109 7697";
+const telefonoActopan = "772 728 1743";
+const longitudActopan = "20.2632278";
+const latitudActopan = "-98.9391817";
+const nameActopan = "Actopan";
+
+const sucursalPachuca = "Sucursal Pachuca";
+const direccionPachuca = "Francisco Lorenzana No. 118, Col. Morelos, Pachuca de Soto, Hidalgo. C.P. 42040";
+const correoPachuca = "cadpachuca@gmail.com";
+const whatsappPachuca = "771 729 0256";
+const telefonoPachuca = "771 281 9826";
+const longitudPachuca = "20.1252001";
+const latitudPachuca = "-98.7404321";
+const namePachuca = "Pachuca";
+
 const Color myColor = Color.fromRGBO(104, 145, 208,1);
 
 const Color myColorIntense = Color.fromRGBO(104, 125, 208,1);

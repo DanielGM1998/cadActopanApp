@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../constants/constants.dart';
 import '../../widgets/my_app_bar.dart';
 import '../../widgets/side_menu.dart';
@@ -50,7 +53,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    //final Size _size = MediaQuery.of(context).size;
+    final Size _size = MediaQuery.of(context).size;
     //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
 
     return FutureBuilder(
@@ -73,10 +76,172 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                         tileMode: TileMode.repeated,
                       ),
                     ),
-                    child: const Padding(
-                    padding: EdgeInsets.all(16.0),
+                    child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Center(
-                      child: Text("Contacto"),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/icon/icon.png",
+                                      height: _size.height*0.1
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(
+                                      sucursalActopan,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(direccionActopan, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(correoActopan, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text("WhatsApp: "+whatsappActopan, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text("Tel: "+telefonoActopan, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: _size.height*0.04),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _openGoogleMaps(longitudActopan,latitudActopan);
+                                        }, icon: const FaIcon(FontAwesomeIcons.mapLocationDot)),
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _openMail(correoActopan);
+                                        }, icon: const Icon(Icons.email_outlined)),
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _openWhatsApp(whatsappActopan, nameActopan);
+                                        }, icon: const FaIcon(FontAwesomeIcons.whatsapp)),
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _makePhoneCall(telefonoActopan);
+                                        }, icon: const Icon(Icons.phone)),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: _size.height*0.02),
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/icon/icon.png",
+                                      height: _size.height*0.1
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(
+                                      sucursalPachuca,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(direccionPachuca, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(correoPachuca, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text("WhatsApp: "+whatsappPachuca, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text("Tel: "+telefonoPachuca, 
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: _size.height*0.04),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _openGoogleMaps(longitudPachuca, latitudPachuca);
+                                        }, icon: const FaIcon(FontAwesomeIcons.mapLocationDot)),
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _openMail(correoPachuca);
+                                        }, icon: const Icon(Icons.email_outlined)),
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _openWhatsApp(whatsappPachuca, namePachuca);
+                                        }, icon: const FaIcon(FontAwesomeIcons.whatsapp)),
+                                        IconButton.outlined(
+                                          iconSize: _size.height*0.04,
+                                          color: myColor,
+                                          onPressed:() {
+                                            _makePhoneCall(telefonoPachuca);
+                                        }, icon: const Icon(Icons.phone)),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     )
                   ),
                 ),
@@ -116,5 +281,50 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
           ),
         )) ??
         false;
+  }
+
+  Future<void> _openGoogleMaps(String longitud, String latitud) async {
+    // ignore: deprecated_member_use
+    launch('https://www.google.com/maps/search/?api=1&query=$longitud,$latitud');
+    // String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$longitud,$latitud';
+    // if (await canLaunchUrl(Uri.parse(googleUrl))) {
+    //   await launchUrl(Uri.parse(googleUrl));
+    // } else {
+    //   throw 'Could not open the map.';
+    // }
+  }
+
+  Future<void> _openMail(String email) async {
+    // ignore: deprecated_member_use
+    launch('mailto:$email');
+  }
+
+  Future<void> _openWhatsApp(String numero, String nombre) async {
+    final whatsappUrl = "whatsapp://send?phone=$numero&text=${Uri.encodeComponent("Hola CAD "+nombre)}";
+    final whatsappWebUrl = "https://wa.me/$numero?text=${Uri.encodeComponent("Hola CAD "+nombre)}"; 
+    try {
+      if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+        await launchUrl(Uri.parse(whatsappUrl), mode: LaunchMode.externalApplication);
+      } else {
+        if (await canLaunchUrl(Uri.parse(whatsappWebUrl))) {
+          await launchUrl(Uri.parse(whatsappWebUrl), mode: LaunchMode.externalApplication);
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error al abrir WhatsApp: $e');
+      }
+    }
+  }
+
+  Future<void> _makePhoneCall(String numero) async {
+    final phoneCallUri = Uri.parse('tel:$numero');
+    if (await canLaunchUrl(phoneCallUri)) {
+      await launchUrl(phoneCallUri, mode: LaunchMode.externalApplication);
+    } else {
+      if (kDebugMode) {
+        print('No se pudo realizar la llamada al número $numero');
+      }
+    }
   }
 }
