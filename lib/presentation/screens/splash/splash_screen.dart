@@ -42,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size _size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: getLoggedInState(),
       builder: (context, snapshot) {
@@ -57,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
               tileMode: TileMode.repeated,
             ),
             logo: Image.asset(myLogo),
-            logoWidth: 130,
+            logoWidth: _size.height*0.2,
             showLoader: true,
             loaderColor: myColor,
             navigator: const HomeScreen(),
@@ -75,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
               tileMode: TileMode.repeated,
             ),
             logo: Image.asset(myLogo),
-            logoWidth: 130,
+            logoWidth: _size.height*0.2,
             showLoader: true,
             loaderColor: myColor,
             navigator: const LoginScreen(),

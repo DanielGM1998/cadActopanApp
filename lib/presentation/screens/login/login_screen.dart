@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:recuperacion/presentation/screens/home/home_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,15 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _passwordVisible = true;
   var textController = TextEditingController();
 
-  Future<void> requestStoragePermission() async {
-    // Solicitar permiso de almacenamiento
-    var status = await Permission.storage.request();
-    if (status == PermissionStatus.granted) {
-      print('Permiso de almacenamiento otorgado');
-    } else {
-      print('Permiso de almacenamiento denegado');
-    }
-  }
+  // Future<void> requestStoragePermission() async {
+  //   // Solicitar permiso de almacenamiento
+  //   var status = await Permission.storage.request();
+  //   if (status == PermissionStatus.granted) {
+  //     print('Permiso de almacenamiento otorgado');
+  //   } else {
+  //     print('Permiso de almacenamiento denegado');
+  //   }
+  // }
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final Size _size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -77,9 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 120,
                       ),
                       Image.asset(myLogo,
-                          width: size.width * 0.70),
-                      const SizedBox(
-                        height: 100,
+                          width: _size.width * 0.70),
+                      SizedBox(
+                        height: _size.height*0.12,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -96,12 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               textAlign: TextAlign.left,
                             ),
                           ),
-                          SizedBox(height: size.height * 0.02),
+                          SizedBox(height: _size.height * 0.02),
                           //////
                           Column(
                             children: <Widget>[
-                              const SizedBox(
-                                height: 20,
+                              SizedBox(
+                                height: _size.height*0.012,
                               ),
                               Theme(
                                 data: Theme.of(context).copyWith(
@@ -148,8 +147,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 25,
+                              SizedBox(
+                                height: _size.height*0.012,
                               ),
                               Theme(
                                 data: Theme.of(context).copyWith(
@@ -270,8 +269,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
+                              SizedBox(
+                                height: _size.height*0.02,
                               ),
                             ],
                           ),
@@ -357,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Container(
                               color: Colors.transparent,
-                              height: size.height * 0.10),
+                              height: _size.height * 0.10),
                         ],
                       ),
                     ],

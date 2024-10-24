@@ -180,9 +180,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final Size _size = MediaQuery.of(context).size;
-    //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
+    final Size _size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: getVariables(),
       builder: (context, snapshot) {
@@ -207,14 +205,14 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.symmetric(horizontal:10.0),
                     child: CustomRefreshIndicator(
                       builder: MaterialIndicatorDelegate(
                         builder: (context, controller) {
-                          return const Icon(
+                          return Icon(
                             Icons.refresh_outlined,
                             color: myColor,
-                            size: 30,
+                            size: _size.width*0.1,
                           );
                         },
                       ),
@@ -231,6 +229,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                       child: isFirstLoadRunning
                           ? const Center(child: CircularProgressIndicator(color: myColor,))
                           : Column(children: [
+                              SizedBox(height: _size.height*0.01),
                               Expanded(
                                   child: ListView.builder(
                                   controller: controller,
@@ -242,14 +241,14 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                                       ), 
                                       elevation: 5, 
                                       child: Padding(
-                                        padding: const EdgeInsets.all(16.0), 
+                                        padding: const EdgeInsets.all(12.0), 
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.start, 
                                           crossAxisAlignment: CrossAxisAlignment.center, 
                                           children: [
                                             CircleAvatar(
                                               backgroundColor: Colors.green, 
-                                              radius: 25, 
+                                              radius: _size.width*0.07, 
                                               child: Icon(
                                                 items[index]['tipo'].toString() == "4"
                                                       ? Icons.mode_night_outlined
@@ -261,7 +260,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                                                 color: Colors.white,
                                               ), 
                                             ), 
-                                            const SizedBox(width: 10), 
+                                            SizedBox(width: _size.width*0.02), 
                                             Expanded( 
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.start, 
@@ -300,7 +299,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        const SizedBox(height: 5), 
+                                                        SizedBox(height: _size.height*0.01), 
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
@@ -328,9 +327,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                                 ),
                               ),
                               if(finalScreen)
-                                const SizedBox(
-                                  height: 50,
-                                ),
+                                SizedBox(height: _size.height*0.06),
                               if (isLoadMoreRunning)
                                 const Padding(
                                   padding: EdgeInsets.all(10),
@@ -373,7 +370,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                     Row(
                       children: [
                         const Text('Cena', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 20),
+                        SizedBox(width: _size.width*0.05),
                         FloatingActionButton.small(
                           heroTag: null,
                           onPressed: () {
@@ -388,7 +385,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                     Row(
                       children: [
                         const Text('Comida', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 20),
+                        SizedBox(width: _size.width*0.05),
                         FloatingActionButton.small(
                           heroTag: null,
                           onPressed:() {
@@ -403,7 +400,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                     Row(
                       children: [
                         const Text('Desayuno', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 20),
+                        SizedBox(width: _size.width*0.05),
                         FloatingActionButton.small(
                           heroTag: null,
                           onPressed:() {
@@ -418,7 +415,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                     Row(
                       children: [
                         const Text('Ayuno', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 20),
+                        SizedBox(width: _size.width*0.05),
                         FloatingActionButton.small(
                           heroTag: null,
                           onPressed:() {
@@ -447,6 +444,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
   }
 
   void showModalSheet(String nombre, int tipo, IconData icono) {
+    final Size _size = MediaQuery.of(context).size;
     now = DateTime.now();
 
     String fechaBD = _fechaToBD(now);
@@ -463,7 +461,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
           builder: (BuildContext context, StateSetter setModalState) {
             return Container(
               key: _keyModal, 
-              height: 580.0,
+              height: _size.height*0.75,
               padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -502,9 +500,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
+                  SizedBox(height: _size.height * 0.02),
                   Column(
                     children: <Widget>[
                       FloatingActionButton(
@@ -515,9 +511,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                           ),
                           onPressed: () {}
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: _size.height*0.02),
                       Text(
                         nombre,
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -525,9 +519,7 @@ class _GlucosaScreenState extends State<GlucosaScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 35,
-                  ),
+                  SizedBox(height: _size.height * 0.02),
                   Center(
                       child: InkWell(
                     child: Chip(

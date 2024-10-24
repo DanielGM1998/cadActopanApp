@@ -23,7 +23,7 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final Size _size = MediaQuery.of(context).size;
     return NavigationDrawer(
       backgroundColor: Colors.white,
       selectedIndex: navDrawerIndex,
@@ -163,94 +163,6 @@ class _SideMenuState extends State<SideMenu> {
                 ),
               );
               break;
-            /*case 6:
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  barrierColor: Colors.black.withOpacity(0.6),
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionDuration: const Duration(milliseconds: 200),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 5 * animation.value,
-                        sigmaY: 5 * animation.value,
-                      ),
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                ),
-              );
-              break;
-            case 7:
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  barrierColor: Colors.black.withOpacity(0.6),
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionDuration: const Duration(milliseconds: 200),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 5 * animation.value,
-                        sigmaY: 5 * animation.value,
-                      ),
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                ),
-              );
-              break;
-            case 8:
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  barrierColor: Colors.black.withOpacity(0.6),
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionDuration: const Duration(milliseconds: 200),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 5 * animation.value,
-                        sigmaY: 5 * animation.value,
-                      ),
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                ),
-              );
-              break;
-            case 9:
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  barrierColor: Colors.black.withOpacity(0.6),
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => const UsuarioScreen(),
-                  transitionDuration: const Duration(milliseconds: 200),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 5 * animation.value,
-                        sigmaY: 5 * animation.value,
-                      ),
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                ),
-              );
-              break;*/
             default:
               Navigator.of(context).push(
                 PageRouteBuilder(
@@ -286,10 +198,10 @@ class _SideMenuState extends State<SideMenu> {
             children: [
               Image.asset(
                 myLogo,
-                height: size.height * 0.07,
-                width: size.width * 0.5,
+                height: _size.height * 0.07,
+                width: _size.width * 0.5,
               ),
-              SizedBox(height: size.width * 0.01),
+              SizedBox(height: _size.width * 0.015),
               Text(widget.user!,
                   style: const TextStyle(
                       color: Color.fromRGBO(0, 0, 77, 1), fontSize: 18)),
@@ -318,7 +230,7 @@ class _SideMenuState extends State<SideMenu> {
         const NavigationDrawerDestination(
             icon: Icon(
               Icons.water_drop_outlined,
-              color: myColor,
+              color: Colors.green,
             ),
             label: Text(
               "Glucosa",
@@ -331,12 +243,12 @@ class _SideMenuState extends State<SideMenu> {
           endIndent: 20,
           color: myColor,
         ),
-        const NavigationDrawerDestination(
+        NavigationDrawerDestination(
             icon: Icon(
               Icons.favorite_border,
-              color: myColor,
+              color: Colors.yellow[600],
             ),
-            label: Text(
+            label: const Text(
               "Presión Arterial",
               style: TextStyle(color: myColor),
             )),
@@ -350,7 +262,7 @@ class _SideMenuState extends State<SideMenu> {
         const NavigationDrawerDestination(
             icon: Icon(
               Icons.medication,
-              color: myColor,
+              color: Colors.red,
             ),
             label: Text(
               "Receta",
@@ -366,7 +278,7 @@ class _SideMenuState extends State<SideMenu> {
         const NavigationDrawerDestination(
             icon: Icon(
               Icons.assignment,
-              color: myColor,
+              color: Colors.deepPurple,
             ),
             label: Text(
               "Laboratorios",
@@ -395,75 +307,6 @@ class _SideMenuState extends State<SideMenu> {
           endIndent: 20,
           color: myColor,
         ),
-        /*
-        const NavigationDrawerDestination(
-            icon: Icon(
-              Icons.baby_changing_station,
-              color: myColor,
-            ),
-            label: Text(
-              "Pendientes",
-              style: TextStyle(color: myColor),
-            )),
-        const Divider(
-          height: 1,
-          thickness: 0.1,
-          indent: 20,
-          endIndent: 20,
-          color: myColor,
-        ),
-        const NavigationDrawerDestination(
-            icon: Icon(
-              Icons.h_mobiledata,
-              color: myColor,
-            ),
-            label: Text(
-              "Pendientes 2",
-              style: TextStyle(color: myColor),
-            )),
-        const Divider(
-          height: 1,
-          thickness: 0.1,
-          indent: 20,
-          endIndent: 20,
-          color: myColor,
-        ),
-        const NavigationDrawerDestination(
-            icon: Icon(
-              Icons.javascript,
-              color: myColor,
-            ),
-            label: Text(
-              "Pendientes 3",
-              style: TextStyle(color: myColor),
-            )),
-        const Divider(
-          height: 1,
-          thickness: 0.1,
-          indent: 20,
-          endIndent: 20,
-          color: myColor,
-        ),
-        widget.tipoapp == "0" 
-        ?  const NavigationDrawerDestination(
-            icon: Icon(
-              Icons.kayaking,
-              color: myColor,
-            ),
-            label: Text(
-              "Usuarios",
-              style: TextStyle(color: myColor),
-            ))
-            : const SizedBox.shrink(),
-        widget.tipoapp == "0" 
-        ? const Divider(
-          height: 1,
-          thickness: 0.1,
-          indent: 20,
-          endIndent: 20,
-          color: myColor,
-        )
-        : const SizedBox.shrink(),*/
       ],
     );
   }

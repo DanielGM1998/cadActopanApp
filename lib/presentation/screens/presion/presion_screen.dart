@@ -180,9 +180,7 @@ class _PresionScreenState extends State<PresionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final Size _size = MediaQuery.of(context).size;
-    //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
+    final Size _size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: getVariables(),
       builder: (context, snapshot) {
@@ -211,10 +209,10 @@ class _PresionScreenState extends State<PresionScreen> {
                     child: CustomRefreshIndicator(
                       builder: MaterialIndicatorDelegate(
                         builder: (context, controller) {
-                          return const Icon(
+                          return Icon(
                             Icons.refresh_outlined,
                             color: myColor,
-                            size: 30,
+                            size: _size.width*0.1,
                           );
                         },
                       ),
@@ -231,6 +229,7 @@ class _PresionScreenState extends State<PresionScreen> {
                       child: isFirstLoadRunning
                           ? const Center(child: CircularProgressIndicator(color: myColor))
                           : Column(children: [
+                              SizedBox(height: _size.height*0.01),
                               Expanded(
                                   child: ListView.builder(
                                   controller: controller,
@@ -249,12 +248,12 @@ class _PresionScreenState extends State<PresionScreen> {
                                           children: [
                                             CircleAvatar(
                                               backgroundColor: Colors.yellow[600], 
-                                              radius: 25, 
+                                              radius: _size.width*0.07, 
                                               child: const Icon(Icons.favorite_border,
                                                 color: Colors.black,
                                               ), 
                                             ), 
-                                            const SizedBox(width: 10), 
+                                            SizedBox(width: _size.width*0.02), 
                                             Expanded( 
                                               child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.start, 
@@ -286,7 +285,7 @@ class _PresionScreenState extends State<PresionScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        const SizedBox(height: 5), 
+                                                        SizedBox(height: _size.height*0.01), 
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
@@ -313,9 +312,7 @@ class _PresionScreenState extends State<PresionScreen> {
                                 ),
                               ),
                               if(finalScreen)
-                                const SizedBox(
-                                  height: 50,
-                                ),
+                                SizedBox(height: _size.height*0.06),
                               if (isLoadMoreRunning)
                                 const Padding(
                                   padding: EdgeInsets.all(10),
@@ -375,7 +372,7 @@ class _PresionScreenState extends State<PresionScreen> {
           builder: (BuildContext context, StateSetter setModalState) {
             return Container(
               key: _keyModal, 
-              height: 580.0,
+              height: _size.height*0.75,
               padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -459,7 +456,7 @@ class _PresionScreenState extends State<PresionScreen> {
                   ),
                   SizedBox(height: _size.height * 0.05),
                   Center(
-                      child: InkWell(
+                    child: InkWell(
                     child: Chip(
                       label: Text(fecha),
                     ),
@@ -494,7 +491,6 @@ class _PresionScreenState extends State<PresionScreen> {
                           fechaBD = _fechaToBD(dateTime);
                         },
                       );
-
                     },
                   )),
                   Expanded(
@@ -527,8 +523,8 @@ class _PresionScreenState extends State<PresionScreen> {
                                     } else {
                                       _sistolica = _preController.text;
                                       _diastolica = _preController2.text;
-                                      print(_sistolica+" | "+_diastolica);
-                                      print(fechaBD+" | "+hora);
+                                      //print(_sistolica+" | "+_diastolica);
+                                      //print(fechaBD+" | "+hora);
                                       _savePresion(context, fechaBD, hora);
                                     }
                                   });
@@ -588,13 +584,13 @@ class _PresionScreenState extends State<PresionScreen> {
     try {
       var data = {"paciente": widget.idPaciente, "fecha": fecha, "hora": hora, "sistolica": _sistolica, "diastolica": _diastolica};
       final response = await http.post(
-          Uri( 
-            scheme: 'https',
-            host: 'v8.cadactopan.com.mx',
-            path: '/api/addPresion',
-          ),
-          body: data,
-        );
+        Uri( 
+          scheme: 'https',
+          host: 'v8.cadactopan.com.mx',
+          path: '/api/addPresion',
+        ),
+        body: data,
+      );
       if (response.statusCode == 200) {
         String body3 = utf8.decode(response.bodyBytes);
         var jsonData = jsonDecode(body3);
@@ -666,26 +662,26 @@ class _PresionScreenState extends State<PresionScreen> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Cerrar aplicación'),
-            content: const Text('¿Deseas salir de la aplicación?'),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            actions: <Widget>[
-              OutlinedButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
-              ),
-              ElevatedButton(
-                onPressed: () => SystemNavigator.pop(),
-                child: const Text('Si'),
-              ),
-            ],
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Cerrar aplicación'),
+        content: const Text('¿Deseas salir de la aplicación?'),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0))),
+        actions: <Widget>[
+          OutlinedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
           ),
-        )) ??
-        false;
+          ElevatedButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: const Text('Si'),
+          ),
+        ],
+      ),
+    )) ??
+    false;
   }
 
 }

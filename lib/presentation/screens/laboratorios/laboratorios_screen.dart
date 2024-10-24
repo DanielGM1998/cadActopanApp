@@ -40,17 +40,6 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
     const Color.fromRGBO(55, 171, 204, 0.8),
   ];
 
-  // final List<Map<String, dynamic>> modulos = [
-  //   {'nombre': 'Glucosa', 'icono': Icons.person, 'color': Colors.green},
-  //   {'nombre': 'Presión Arterial', 'icono': Icons.settings, 'color': Colors.yellow},
-  //   {'nombre': 'Receta', 'icono': Icons.bar_chart, 'color': Colors.red},
-  //   {'nombre': 'Laboratorios', 'icono': Icons.message, 'color': Colors.deepPurple},
-  //   {'nombre': 'Alimentación', 'icono': Icons.calendar_today, 'color': Colors.orange},
-  //   {'nombre': 'Pendientes', 'icono': Icons.calendar_today, 'color': Colors.blue},
-  //   {'nombre': 'Pendientes2', 'icono': Icons.calendar_today, 'color': Colors.blueGrey},
-  //   {'nombre': 'Pendientes3', 'icono': Icons.calendar_today, 'color': Colors.lime},
-  // ];
-
   @override
   void initState() {
     super.initState();
@@ -58,9 +47,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    //final Size _size = MediaQuery.of(context).size;
-    //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
+    final Size _size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: getVariables(),
       builder: (context, snapshot) {
@@ -86,7 +73,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                           ),
                         ),
                         child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: 
                           GridView.builder(
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -101,11 +88,6 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
 
                               final List<Color> avatarColors = [
                                 Colors.deepPurple,
-                                // Colors.red,
-                                // Colors.green,
-                                // Colors.purple,
-                                // Colors.orange,
-                                // Colors.pink
                               ];
 
                               final Color avatarColor = avatarColors[index % avatarColors.length];
@@ -121,7 +103,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CircleAvatar(
-                                        radius: 40, 
+                                        radius: _size.width * 0.101, 
                                         backgroundColor: avatarColor, 
                                         child: Text(
                                           item['valor']+"\n${item['unidad']}", 
@@ -129,7 +111,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                                           style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold), 
                                         ),
                                       ),
-                                      const SizedBox(height: 10),
+                                      SizedBox(height: _size.height * 0.015),
                                       Text(
                                         item['nombre']!,
                                         textAlign: TextAlign.center,
@@ -139,7 +121,7 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      const SizedBox(height: 10),
+                                      SizedBox(height: _size.height * 0.01),
                                       Text('${item['fecha']}', 
                                         style: const TextStyle(color: Colors.black, fontSize: 16),
                                         textAlign: TextAlign.center,
@@ -240,7 +222,6 @@ class _LaboratoriosScreenState extends State<LaboratoriosScreen> with SingleTick
       if (response.statusCode == 200) {
         String body3 = utf8.decode(response.bodyBytes);
         var jsonData = jsonDecode(body3);
-        //print("jsonData: $jsonData");
         if (jsonData is List || jsonData is Map) {
           laboratorios = jsonData;
         }

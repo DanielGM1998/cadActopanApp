@@ -143,9 +143,6 @@ class _RecetaScreenState extends State<RecetaScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    //final Size _size = MediaQuery.of(context).size;
-    //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
     return FutureBuilder(
       future: getVariables(),
       builder: (context, snapshot) {

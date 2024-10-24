@@ -27,13 +27,6 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
   String? _tipoapp;
   String? _userapp;
 
-  // Ruta local del archivo PDF
-  String? localFilePath;
-  bool isLoading = true;
-  bool hasError = false;
-  String? pdfUrl;
-  bool isDownloaded = false;
-
   Future<bool?> getVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _tipoapp = prefs.getString("tipo_app");
@@ -54,8 +47,6 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
-    //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
     return FutureBuilder(
       future: getVariables(),
       builder: (context, snapshot) {
@@ -77,7 +68,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                       ),
                     ),
                     child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: Center(
                       child: SingleChildScrollView(
                         child: Column(
@@ -88,7 +79,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                               ),
                               elevation: 5,
                               child: Padding(
-                                padding: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -96,7 +87,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                                       "assets/icon/icon.png",
                                       height: _size.height*0.1
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text(
                                       sucursalActopan,
                                       textAlign: TextAlign.center,
@@ -106,27 +97,27 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text(direccionActopan, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text(correoActopan, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text("WhatsApp: "+whatsappActopan, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text("Tel: "+telefonoActopan, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    SizedBox(height: _size.height*0.04),
+                                    SizedBox(height: _size.height * 0.04),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
@@ -167,7 +158,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                               ),
                               elevation: 5,
                               child: Padding(
-                                padding: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -175,7 +166,7 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                                       "assets/icon/icon.png",
                                       height: _size.height*0.1
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text(
                                       sucursalPachuca,
                                       textAlign: TextAlign.center,
@@ -185,22 +176,22 @@ class _ContactoScreenState extends State<ContactoScreen> with SingleTickerProvid
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text(direccionPachuca, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text(correoPachuca, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text("WhatsApp: "+whatsappPachuca, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 10),
+                                    SizedBox(height: _size.height * 0.01),
                                     const Text("Tel: "+telefonoPachuca, 
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                       textAlign: TextAlign.center,

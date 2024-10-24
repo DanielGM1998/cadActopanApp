@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:recuperacion/constants/constants.dart';
@@ -9,7 +8,6 @@ import 'package:recuperacion/presentation/screens/glucosa/glucosa_screen.dart';
 import 'package:recuperacion/presentation/screens/presion/presion_screen.dart';
 import 'package:recuperacion/presentation/screens/receta/receta_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/my_app_bar.dart';
 import '../../widgets/side_menu.dart';
@@ -44,25 +42,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     const Color.fromRGBO(55, 171, 204, 0.8),
   ];
 
-  List<DateTime?> _dialogCalendarPickerValue = [
-    DateTime.now(),
-    DateTime.now().add(const Duration(days: 15)),
-  ];
+  // List<DateTime?> _dialogCalendarPickerValue = [
+  //   DateTime.now(),
+  //   DateTime.now().add(const Duration(days: 15)),
+  // ];
 
   late List<Map<String, dynamic>> modulos;
 
   @override
   void initState() {
     super.initState();
-    /* WidgetsBinding.instance
-        .addPostFrameCallback((_) async => { // accesoController.text = _acceso!// }); */
   }
 
   @override
   Widget build(BuildContext context) {
-    //final Size _size = MediaQuery.of(context).size;
-    //final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
+    final Size _size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: getVariables(),
       builder: (context, snapshot) {
@@ -72,10 +66,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             {'nombre': 'Presión Arterial', 'icono': Icons.favorite_border, 'color': Colors.yellow[600], 'ruta': PresionScreen(idPaciente: _idPaciente!.toString())},
             {'nombre': 'Receta', 'icono': Icons.medication, 'color': Colors.red, 'ruta': RecetaScreen(idPaciente: _idPaciente.toString())},
             {'nombre': 'Laboratorios', 'icono': Icons.assignment, 'color': Colors.deepPurple, 'ruta': const LaboratoriosScreen()},
-            // {'nombre': 'Alimentación', 'icono': Icons.calendar_today, 'color': Colors.orange, 'ruta': const LaboratoriosScreen()},
-            // {'nombre': 'Pendientes', 'icono': Icons.calendar_today, 'color': Colors.blue, 'ruta': const LaboratoriosScreen()},
-            // {'nombre': 'Pendientes2', 'icono': Icons.calendar_today, 'color': Colors.blueGrey, 'ruta': const LaboratoriosScreen()},
-            // {'nombre': 'Pendientes3', 'icono': Icons.calendar_today, 'color': Colors.lime, 'ruta': const LaboratoriosScreen()},
           ];
           return WillPopScope(
             onWillPop: _onWillPop,
@@ -94,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                   ),
                   child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.symmetric(vertical: _size.width*0.02),
                   child: ListView.builder(
                     itemCount: modulos.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -102,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         children: [
                           InkWell(
                             onTap: () {
-                              //print("Seleccionaste: ${modulos[index]['nombre']}");
                               Navigator.of(context).push(
                               PageRouteBuilder(
                                 barrierColor: Colors.black.withOpacity(0.6),
@@ -130,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   child: BackdropFilter(
                                     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                                     child: Container(
-                                      height: 100.0,
+                                      height: _size.height*0.12,
                                       margin: const EdgeInsets.all(15),
                                       decoration: BoxDecoration(
                                         color: Colors.white24.withOpacity(0.3),
@@ -142,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 Positioned.fill(
                                   child: Row(
                                     children: [
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: _size.width*0.1),
                                       Container(
                                         padding: const EdgeInsets.all(12.0),
                                         decoration: BoxDecoration(
@@ -155,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           color: Colors.white,
                                         ),
                                       ),
-                                      const SizedBox(width: 16),
+                                      SizedBox(width: _size.width*0.05),
                                       Text(
                                         modulos[index]['nombre'],
                                         style: const TextStyle(
@@ -213,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         false;
   }
 
-  _datePicker() async {
+  /*_datePicker() async {
     const dayTextStyle =
         TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
     const weekendTextStyle =
@@ -423,5 +412,5 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       throw 'Could not launch $url';
     }
     return '';
-  }
+  }*/
 }
