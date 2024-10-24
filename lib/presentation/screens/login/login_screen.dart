@@ -417,9 +417,9 @@ Future<String> _check(telefono, pass) async {
         print(jsonData);
         print(jsonData['paciente']);
         if(jsonData['paciente']['admin']==true){
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente'];
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",0,"+jsonData['paciente']['id_paciente']+","+jsonData['paciente']['next'];
         }else{
-          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente'];
+          return 'Acceso correcto,'+jsonData['paciente']['nombre']+",1,"+jsonData['paciente']['id_paciente']+","+jsonData['paciente']['next'];
         }
       }else{
         return 'Verifique sus datos';
@@ -466,6 +466,7 @@ Future<void> showResultDialog(
     prefs.setString('user', splitted[1]);
     prefs.setString('tipo_app', splitted[2]);
     prefs.setString('id_paciente', splitted[3]);
+    prefs.setString('next_date', splitted[4]);
     prefs.setString('telefono', telefono);
     prefs.setString('pass', pass);
     Navigator.of(context).push(

@@ -28,12 +28,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   String? _tipoapp;
   String? _userapp;
   String? _idPaciente;
+  String? _nextDate;
 
   Future<bool?> getVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _tipoapp = prefs.getString("tipo_app");
     _userapp = prefs.getString("user");
     _idPaciente = prefs.getString("id_paciente");
+    _nextDate = prefs.getString("next_date");
     return false;
   }
 
@@ -85,82 +87,172 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   child: Padding(
                   padding: EdgeInsets.symmetric(vertical: _size.width*0.02),
-                  child: ListView.builder(
-                    itemCount: modulos.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                              PageRouteBuilder(
-                                barrierColor: Colors.black.withOpacity(0.6),
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => modulos[index]['ruta'],
-                                transitionDuration: const Duration(milliseconds: 200),
-                                transitionsBuilder: (_, animation, __, child) {
-                                  return BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                      sigmaX: 5 * animation.value,
-                                      sigmaY: 5 * animation.value,
-                                    ),
-                                    child: FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                            },
-                            child: Stack(
-                              children: [
-                                ClipRect(
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                                    child: Container(
-                                      height: _size.height*0.12,
-                                      margin: const EdgeInsets.all(15),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white24.withOpacity(0.3),
-                                        borderRadius: BorderRadius.circular(20),                                        
-                                      ),
+                  child: Column(
+                    children: [
+                      InkWell(
+                          child: Stack(
+                            children: [
+                              ClipRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                                  child: Container(
+                                    height: _size.height*0.12,
+                                    margin: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white24.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(20),                                        
                                     ),
                                   ),
                                 ),
-                                Positioned.fill(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: _size.width*0.1),
-                                      Container(
-                                        padding: const EdgeInsets.all(12.0),
-                                        decoration: BoxDecoration(
-                                          color: modulos[index]['color'],
-                                          borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              Positioned.fill(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(width: _size.width*0.1),
+                                        Text(
+                                          "Hola "+_userapp!,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: myColor,
+                                            fontWeight: FontWeight.bold
+                                          ),
                                         ),
-                                        child: Icon(
-                                          modulos[index]['icono'],
-                                          size: 40,
-                                          color: Colors.white,
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: _size.width*0.1),
+                                        const Text(
+                                          "Núm. de expediente: ",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: myColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          _idPaciente!,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: myColor,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: _size.width*0.1),
+                                        Text(
+                                          _nextDate=="" || _nextDate==null
+                                            ? "No hay consulta programada"
+                                            : "Próx. consulta: ",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: myColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          _nextDate=="" || _nextDate==null
+                                            ? ""
+                                            : _nextDate!,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: myColor,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: modulos.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                    PageRouteBuilder(
+                                      barrierColor: Colors.black.withOpacity(0.6),
+                                      opaque: false,
+                                      pageBuilder: (_, __, ___) => modulos[index]['ruta'],
+                                      transitionDuration: const Duration(milliseconds: 200),
+                                      transitionsBuilder: (_, animation, __, child) {
+                                        return BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                            sigmaX: 5 * animation.value,
+                                            sigmaY: 5 * animation.value,
+                                          ),
+                                          child: FadeTransition(
+                                            opacity: animation,
+                                            child: child,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      ClipRect(
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                                          child: Container(
+                                            height: _size.height*0.12,
+                                            margin: const EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white24.withOpacity(0.3),
+                                              borderRadius: BorderRadius.circular(20),                                        
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      SizedBox(width: _size.width*0.05),
-                                      Text(
-                                        modulos[index]['nombre'],
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          color: myColor,
+                                      Positioned.fill(
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: _size.width*0.1),
+                                            Container(
+                                              padding: const EdgeInsets.all(12.0),
+                                              decoration: BoxDecoration(
+                                                color: modulos[index]['color'],
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              child: Icon(
+                                                modulos[index]['icono'],
+                                                size: 40,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(width: _size.width*0.05),
+                                            Text(
+                                              modulos[index]['nombre'],
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: myColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ],
-                            ),
-                          ),
-                        ],
-                      ); 
-                    },
+                            ); 
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   )
                 ),
